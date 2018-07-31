@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RevealingSplashView
 
 class ViewController: UIViewController {
 
@@ -19,6 +20,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var ticks: UILabel!
     var contador: Int = 0
     
+    let splashScreen = RevealingSplashView(iconImage: UIImage(named: "iconApp")!, iconInitialSize: CGSize(width: 90, height: 90), backgroundColor: UIColor.white)
     
     //Guardar el punto central.
     var tileCenterX : CGFloat = 0.0
@@ -45,25 +47,29 @@ class ViewController: UIViewController {
     //se ejecuta cuando la vista sale en pantalla
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addSubview(self.splashScreen)
+        self.splashScreen.animationType = SplashAnimationType.popAndZoomOut
+        self.splashScreen.startAnimation()
+        
         makeTile()
         randomTiles()
     }
     
-    //alert start
-    override func viewDidAppear(_ animated: Bool){
-        super.viewDidAppear(animated)
-        
-        let alert = UIAlertController(title: "Welcome to the Game!",
-                                      message: "Solve the puzzle in the shortest possible time",
-                                      preferredStyle: .alert)
-        
-        let alertOKAction = UIAlertAction(title:"OK", style: UIAlertActionStyle.default,handler: { action in
-            print("Button pressed, Ok!")
-        })
-        
-        alert.addAction(alertOKAction)
-        self.present(alert, animated: true, completion:nil)
-    }
+//    //alert start
+//    override func viewDidAppear(_ animated: Bool){
+//        super.viewDidAppear(animated)
+//
+//        let alert = UIAlertController(title: "Welcome to the Game!",
+//                                      message: "Solve the puzzle in the shortest possible time",
+//                                      preferredStyle: .alert)
+//
+//        let alertOKAction = UIAlertAction(title:"OK", style: UIAlertActionStyle.default,handler: { action in
+//            print("Button pressed, Ok!")
+//        })
+//
+//        alert.addAction(alertOKAction)
+//        self.present(alert, animated: true, completion:nil)
+//    }
 
     func makeTile(){
         //inicien los arrays en cero.
@@ -153,6 +159,7 @@ class ViewController: UIViewController {
             
             if distance == self.tileWidth {
                 let tempCenter : CGPoint = touchLabel.center
+                //animacion de piezas.
                 UIView.beginAnimations(nil, context: nil)
                 UIView.setAnimationDuration(0.2)
                 touchLabel.center = self.tileEmptyCenter
